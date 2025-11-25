@@ -3,9 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analisador Lexico-</title>
+    <title>Analisador Lexico</title>
 </head>
 <body>
-    
+    <div class="container">
+        <h1>Analisador Léxico</h1>
+        
+        <div class="input-section">
+            <div class="input-group">
+                <label for="register_words">Adicionar Palavras (separadas por espaço):</label>
+                <input type="text" id="register_words" placeholder="Digite as palavras, ex: palavra teste exemplo">
+            </div>
+            <div class="button-group">
+                <button class="btn-primary" id="addWords">Adicionar Palavras</button>
+                <button class="btn-secondary" id="reset">Limpar</button>
+            </div>
+
+            <div class="words-list" id="save-words" style="display: none;">
+                <h3>Palavras Registradas:</h3>
+                <ul></ul>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <div class="input-group">
+                <label for="getWords">Testar Palavra:</label>
+                <input type="text" id="getWords" placeholder="Digite uma palavra para validar">
+            </div>
+        </div>
+
+        <div class="table-section">
+            <h2>Tabela do Autômato</h2>
+            <div id="tableContainer">
+                <div class="empty-state">
+                    <p>Adicione palavras para gerar a tabela do autômato</p>
+                </div>
+            </div>
+            <table id="automato" style="display: none;"></table>
+        </div>
+    </div>
 </body>
 </html>
