@@ -1,0 +1,203 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Inter", Arial, sans-serif;
+}
+
+body {
+    background: #F4F7FA;
+    padding: 40px;
+}
+
+
+.container {
+    max-width: 950px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+h1 {
+    text-align: center;
+    color: #1E293B;
+    margin-bottom: 15px;
+    font-size: 32px;
+    font-weight: 600;
+}
+
+
+.input-section,
+.table-section {
+    background: white;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+}
+
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+label {
+    font-weight: 500;
+    color: #334155;
+}
+
+input {
+    padding: 12px;
+    border: 1px solid #C8D8E5;
+    border-radius: 10px;
+    font-size: 15px;
+    transition: 0.3s ease;
+}
+
+input:focus {
+    border-color: #1E88E5;
+    box-shadow: 0 0 0 3px rgba(30,136,229,0.25);
+    outline: none;
+}
+
+
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.btn-primary {
+    background: #1E88E5;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #1565C0;
+}
+
+.btn-secondary {
+    background: #9E9E9E;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #757575;
+}
+
+
+.words-list {
+    margin-top: 15px;
+}
+
+.words-list ul {
+    padding-left: 22px;
+    margin-top: 10px;
+    color: #1E293B;
+    font-size: 15px;
+}
+
+
+.table-section h2 {
+    margin-bottom: 15px;
+    color: #1E293B;
+    font-weight: 600;
+}
+
+#automato {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+#automato th {
+    background: #E3F2FD;
+    padding: 10px;
+    border: 1px solid #DCE6F1;
+    font-weight: 600;
+    color: #1E293B;
+}
+
+#automato td {
+    padding: 8px 10px;
+    border: 1px solid #DCE6F1;
+    text-align: center;
+    transition: 0.25s ease;
+}
+
+#automato td:not(.empty) {
+    font-weight: 500;
+}
+
+
+.empty-state {
+    text-align: center;
+    padding: 35px;
+    color: #64748B;
+    font-size: 15px;
+}
+
+
+.states_selecionado {
+    background: #1E88E5 !important;
+    color: #fff !important;
+    transition: 0.25s ease;
+}
+
+.letra_selecionada {
+    background: #42A5F5 !important;
+    color: white !important;
+    transition: 0.25s;
+}
+
+/* ===== INPUT ACERTO / ERRO ===== */
+.acerto {
+    border-color: #4CAF50 !important;
+    background-color: #E8F5E9;
+    animation: pulseGreen 0.4s ease;
+}
+
+.erro {
+    border-color: #D32F2F !important;
+    background-color: #FFEBEE;
+    animation: pulseRed 0.4s ease;
+}
+
+@keyframes pulseGreen {
+    0% { box-shadow: 0 0 0 0 rgba(76,175,80,.7); }
+    100% { box-shadow: 0 0 0 12px rgba(76,175,80,0); }
+}
+
+@keyframes pulseRed {
+    0% { box-shadow: 0 0 0 0 rgba(211,47,47,.7); }
+    100% { box-shadow: 0 0 0 12px rgba(211,47,47,0); }
+}
+
+
+@media (max-width: 600px) {
+    .button-group {
+        flex-direction: column;
+    }
+
+    table {
+        font-size: 13px;
+    }
+
+    #automato th,
+    #automato td {
+        padding: 6px;
+    }
+}
