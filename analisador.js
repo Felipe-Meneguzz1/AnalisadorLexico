@@ -3,7 +3,7 @@ let states = [[]];
 let statesGlobal = 0;
 let Tabela = [];
 
-function testWord(word){
+function testWord(word) {
     return /^[a-zA-Z]+$/.test(word);
 }
 
@@ -17,7 +17,7 @@ function registerStates() {
 
         for (let i = 0; i < word.length; i++) {
             let char = word[i];
-            
+
             if (typeof states[currentState][char] === "undefined") {
                 let nextState = statesGlobal + 1;
                 states[currentState][char] = nextState;
@@ -36,29 +36,29 @@ function registerStates() {
 }
 function generateTable() {
     let tableData = [];
-    
+
     for (let i = 0; i < states.length; i++) {
         let row = { state: i };
-        
+
         for (let j = 97; j <= 122; j++) { // a-z
             let letter = String.fromCharCode(j);
             row[letter] = states[i][letter] !== undefined ? states[i][letter] : "-";
         }
-        
+
         if (states[i]["final"]) {
             row["final"] = true;
         }
-        
+
         tableData.push(row);
     }
-    
+
     return tableData;
 }
 
 function renderTable(tableData) {
     const table = document.getElementById("automato");
     const container = document.getElementById("tableContainer");
-    
+
     if (tableData.length === 0) {
         table.style.display = "none";
         container.querySelector(".empty-state").style.display = "block";
@@ -68,7 +68,7 @@ function renderTable(tableData) {
     container.querySelector(".empty-state").style.display = "none";
     table.style.display = "table";
     table.innerHTML = "";
-    
+
     let headerRow = document.createElement("tr");
     let stateHeader = document.createElement("th");
     stateHeader.textContent = "Estado";
@@ -84,7 +84,7 @@ function renderTable(tableData) {
     for (let row of tableData) {
         let tr = document.createElement("tr");
         tr.className = `states_${row.state}`;
-        
+
         let stateTd = document.createElement("td");
         stateTd.textContent = row.final ? `q${row.state}*` : `q${row.state}`;
         tr.appendChild(stateTd);
@@ -93,7 +93,7 @@ function renderTable(tableData) {
             let letter = String.fromCharCode(j);
             let td = document.createElement("td");
             td.className = `letra_${letter}`;
-            
+
             if (row[letter] !== "-") {
                 td.textContent = `q${row[letter]}`;
                 td.style.background = "#69a4cc";
@@ -108,11 +108,10 @@ function renderTable(tableData) {
 }
 function validateWord() {
     const input = document.getElementById("getWords");
-    const word = input.value.toLowerCase();
-    
+    let word = input.value.toLowerCase();
+
     document.querySelectorAll(".states_selecionado").forEach(el => el.classList.remove("states_selecionado"));
     document.querySelectorAll(".letra_selecionada").forEach(el => el.classList.remove("letra_selecionada"));
-
     if (word.length === 0) {
         input.classList.remove("acerto", "erro");
         return;
@@ -121,17 +120,52 @@ function validateWord() {
     let currentState = 0;
     let valid = true;
 
+    if (word.endsWith(" ")) {
+
+        const pureWord = word.slice(0, -1);
+
+        for (let i = 0; i < pureWord.length; i++) {
+            let char = pureWord[i];
+
+            if (!/[a-z]/.test(char)) {
+                valid = false;
+                break;
+            }
+            highlightCell(currentState, char);
+
+            if (Tabela[currentState][char] !== "-") {
+                currentState = Tabela[currentState][char];
+            } else {
+                valid = false;
+                break;
+            }
+        }
+        if (valid && Tabela[currentState]["final"]) {
+            input.classList.remove("erro");
+            input.classList.add("acerto");
+            input.value = "";
+
+            document.querySelectorAll(".states_selecionado, .letra_selecionada")
+                .forEach(el => el.classList.remove("states_selecionado", "letra_selecionada"));
+
+        } else {
+            input.classList.remove("acerto");
+            input.classList.add("erro");
+            input.value = pureWord;
+        }
+
+        return; 
+    }
     for (let i = 0; i < word.length; i++) {
         let char = word[i];
 
-        if (char === " ") {
-            break;
-        }
         if (!/[a-z]/.test(char)) {
             valid = false;
             break;
         }
+
         highlightCell(currentState, char);
+
         if (Tabela[currentState][char] !== "-") {
             currentState = Tabela[currentState][char];
         } else {
@@ -139,14 +173,8 @@ function validateWord() {
             break;
         }
     }
-    if (valid && Tabela[currentState]["final"]) {
-        input.classList.remove("erro");
-        input.classList.add("acerto");
-    } else {
-        input.classList.remove("acerto");
-        input.classList.add("erro");
-    }
 }
+
 
 function highlightCell(state, letter) {
     document.querySelector(`.states_${state}`)?.classList.add("states_selecionado");
@@ -154,10 +182,10 @@ function highlightCell(state, letter) {
 }
 
 // Event Listeners
-document.getElementById("addWords").addEventListener("click", function() {
+document.getElementById("addWords").addEventListener("click", function () {
     const input = document.getElementById("register_words");
     const newWords = input.value.toLowerCase().split(" ").filter(w => w.length > 0);
-    
+
     let invalidWords = [];
     let addedWords = [];
 
@@ -177,7 +205,7 @@ document.getElementById("addWords").addEventListener("click", function() {
     if (addedWords.length > 0) {
         const wordsList = document.querySelector("#save-words ul");
         document.getElementById("save-words").style.display = "block";
-        
+
         for (let word of addedWords) {
             let li = document.createElement("li");
             li.textContent = word;
@@ -186,19 +214,19 @@ document.getElementById("addWords").addEventListener("click", function() {
         registerStates();
         Tabela = generateTable();
         renderTable(Tabela);
-        
+
         input.value = "";
     }
 });
 
 document.getElementById("getWords").addEventListener("input", validateWord);
 
-document.getElementById("reset").addEventListener("click", function() {
+document.getElementById("reset").addEventListener("click", function () {
     if (confirm("Tem certeza que deseja limpar tudo?")) {
         location.reload();
     }
 });
-document.getElementById("register_words").addEventListener("keypress", function(e) {
+document.getElementById("register_words").addEventListener("keypress", function (e) {
     if (e.key === "Enter") {
         document.getElementById("addWords").click();
     }
