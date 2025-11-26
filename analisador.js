@@ -2,6 +2,7 @@ let words = [];
 let states = [[]];
 let statesGlobal = 0;
 let Tabela = [];
+let feedbackTimeout = null;
 
 function testWord(word) {
     return /^[a-zA-Z]+$/.test(word);
@@ -112,6 +113,8 @@ function validateWord() {
 
     document.querySelectorAll(".states_selecionado").forEach(el => el.classList.remove("states_selecionado"));
     document.querySelectorAll(".letra_selecionada").forEach(el => el.classList.remove("letra_selecionada"));
+    clearCellHighlights();
+
     if (word.length === 0) {
         input.classList.remove("acerto", "erro");
         return;
@@ -145,13 +148,20 @@ function validateWord() {
             input.classList.add("acerto");
             input.value = "";
 
+            
+            showSpaceFeedback("Palavra correta", "success");
+
             document.querySelectorAll(".states_selecionado, .letra_selecionada")
                 .forEach(el => el.classList.remove("states_selecionado", "letra_selecionada"));
+            clearCellHighlights();
 
         } else {
             input.classList.remove("acerto");
             input.classList.add("erro");
             input.value = pureWord;
+            
+            showSpaceFeedback("Palavra incorreta", "error");
+            clearCellHighlights();
         }
 
         return; 
@@ -166,9 +176,18 @@ function validateWord() {
 
         highlightCell(currentState, char);
 
+        let cell = document.querySelector(`.states_${currentState} .letra_${char}`);
+        if (cell) cell.classList.add("celula-correta");
+
         if (Tabela[currentState][char] !== "-") {
+            input.classList.remove("erro");
+            input.classList.add("acerto");
             currentState = Tabela[currentState][char];
         } else {
+            let cell = document.querySelector(`.states_${currentState} .letra_${char}`);
+            if (cell) cell.classList.add("celula-incorreta");
+            input.classList.remove("acerto");
+            input.classList.add("erro");
             valid = false;
             break;
         }
@@ -179,6 +198,31 @@ function validateWord() {
 function highlightCell(state, letter) {
     document.querySelector(`.states_${state}`)?.classList.add("states_selecionado");
     document.querySelectorAll(`.letra_${letter}`).forEach(el => el.classList.add("letra_selecionada"));
+}
+
+function showSpaceFeedback(message, type = "success") {
+    const feedback = document.getElementById("space-feedback");
+    if (!feedback) return;
+
+    
+    feedback.classList.remove("success", "error", "show");
+
+    feedback.textContent = message;
+    feedback.classList.add(type);
+    feedback.style.display = "block";
+    
+    void feedback.offsetWidth;
+    feedback.classList.add("show");
+
+    if (feedbackTimeout) {
+        clearTimeout(feedbackTimeout);
+    }
+
+    feedbackTimeout = setTimeout(() => {
+        feedback.classList.remove("show");
+        
+        setTimeout(() => feedback.style.display = "none", 200);
+    }, 1500);
 }
 
 // Event Listeners
@@ -231,3 +275,8 @@ document.getElementById("register_words").addEventListener("keypress", function 
         document.getElementById("addWords").click();
     }
 });
+
+function clearCellHighlights() {
+    document.querySelectorAll(".celula-correta, .celula-incorreta")
+        .forEach(el => el.classList.remove("celula-correta", "celula-incorreta"));
+}

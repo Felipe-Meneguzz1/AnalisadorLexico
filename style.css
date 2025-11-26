@@ -1,4 +1,3 @@
-
 * {
     margin: 0;
     padding: 0;
@@ -11,9 +10,8 @@ body {
     padding: 40px;
 }
 
-
 .container {
-    max-width: 950px;
+    max-width: 1500px;
     margin: auto;
     display: flex;
     flex-direction: column;
@@ -28,7 +26,6 @@ h1 {
     font-weight: 600;
 }
 
-
 .input-section,
 .table-section {
     background: white;
@@ -37,6 +34,10 @@ h1 {
     box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
 }
 
+.table-section {
+    overflow-x: auto;
+    overflow-y: visible;
+}
 
 .input-group {
     display: flex;
@@ -64,7 +65,36 @@ input:focus {
     outline: none;
 }
 
+/* FEEDBACK */
+.space-feedback {
+    margin-top: 10px;
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 200ms ease, transform 200ms ease;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+}
 
+.space-feedback.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.space-feedback.success {
+    background: #4CAF50;
+    color: #fff;
+}
+
+.space-feedback.error {
+    background: #D32F2F;
+    color: #fff;
+}
+
+/* BOTÕES */
 .button-group {
     display: flex;
     gap: 10px;
@@ -98,7 +128,6 @@ button {
     background: #757575;
 }
 
-
 .words-list {
     margin-top: 15px;
 }
@@ -109,7 +138,6 @@ button {
     color: #1E293B;
     font-size: 15px;
 }
-
 
 .table-section h2 {
     margin-bottom: 15px;
@@ -136,20 +164,18 @@ button {
     border: 1px solid #DCE6F1;
     text-align: center;
     transition: 0.25s ease;
-}
-
-#automato td:not(.empty) {
     font-weight: 500;
 }
-
 
 .empty-state {
     text-align: center;
     padding: 35px;
     color: #64748B;
     font-size: 15px;
+    background: #fafafa;
+    border-radius: 10px;
+    border: 1px solid #e5e5e5;
 }
-
 
 .states_selecionado {
     background: #1E88E5 !important;
@@ -163,29 +189,29 @@ button {
     transition: 0.25s;
 }
 
-/* ===== INPUT ACERTO / ERRO ===== */
 .acerto {
     border-color: #4CAF50 !important;
     background-color: #E8F5E9;
+    color: #1B5E20;
     animation: pulseGreen 0.4s ease;
 }
 
 .erro {
     border-color: #D32F2F !important;
     background-color: #FFEBEE;
+    color: #B71C1C;
     animation: pulseRed 0.4s ease;
 }
 
 @keyframes pulseGreen {
-    0% { box-shadow: 0 0 0 0 rgba(76,175,80,.7); }
-    100% { box-shadow: 0 0 0 12px rgba(76,175,80,0); }
+    0% { box-shadow: 0 0 0 0 rgba(76,175,80,.4); }
+    100% { box-shadow: 0 0 0 6px rgba(76,175,80,0); }
 }
 
 @keyframes pulseRed {
-    0% { box-shadow: 0 0 0 0 rgba(211,47,47,.7); }
-    100% { box-shadow: 0 0 0 12px rgba(211,47,47,0); }
+    0% { box-shadow: 0 0 0 0 rgba(211,47,47,.4); }
+    100% { box-shadow: 0 0 0 6px rgba(211,47,47,0); }
 }
-
 
 @media (max-width: 600px) {
     .button-group {
@@ -200,4 +226,14 @@ button {
     #automato td {
         padding: 6px;
     }
+}
+
+.celula-correta {
+    background-color: #A5D6A7 !important; /* verde */
+    color: #1B5E20 !important;
+}
+
+.celula-incorreta {
+    background-color: #EF9A9A !important; /* vermelho */
+    color: #B71C1C !important;
 }
