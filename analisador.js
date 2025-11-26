@@ -123,14 +123,15 @@ function validateWord() {
 
     for (let i = 0; i < word.length; i++) {
         let char = word[i];
-        
+
+        if (char === " ") {
+            break;
+        }
         if (!/[a-z]/.test(char)) {
             valid = false;
             break;
         }
-
         highlightCell(currentState, char);
-
         if (Tabela[currentState][char] !== "-") {
             currentState = Tabela[currentState][char];
         } else {
@@ -138,7 +139,6 @@ function validateWord() {
             break;
         }
     }
-
     if (valid && Tabela[currentState]["final"]) {
         input.classList.remove("erro");
         input.classList.add("acerto");
@@ -191,58 +191,7 @@ document.getElementById("addWords").addEventListener("click", function() {
     }
 });
 
-document.getElementById("getWords").addEventListener("input", function(e) {
-
-    const input = e.target;
-    let value = input.value;
-
-    // Se digitou espaço → é hora de validar o token
-    if (value.endsWith(" ")) {
-
-        let word = value.trim().toLowerCase();
-
-        // limpando estados de highlight
-        document.querySelectorAll(".states_selecionado").forEach(el => el.classList.remove("states_selecionado"));
-        document.querySelectorAll(".letra_selecionada").forEach(el => el.classList.remove("letra_selecionada"));
-
-        if (word.length === 0) return;
-
-        let currentState = 0;
-        let valid = true;
-
-        for (let i = 0; i < word.length; i++) {
-            let char = word[i];
-
-            if (!/[a-z]/.test(char)) {
-                valid = false;
-                break;
-            }
-
-            highlightCell(currentState, char);
-
-            if (Tabela[currentState][char] !== "-") {
-                currentState = Tabela[currentState][char];
-            } else {
-                valid = false;
-                break;
-            }
-        }
-
-        if (valid && Tabela[currentState]["final"]) {
-            input.classList.remove("erro");
-            input.classList.add("acerto");
-        } else {
-            input.classList.remove("acerto");
-            input.classList.add("erro");
-        }
-    }
-
-    // Remove a cor caso esteja digitando novamente antes do espaço
-    else {
-        input.classList.remove("acerto", "erro");
-    }
-});
-
+document.getElementById("getWords").addEventListener("input", validateWord);
 
 document.getElementById("reset").addEventListener("click", function() {
     if (confirm("Tem certeza que deseja limpar tudo?")) {
